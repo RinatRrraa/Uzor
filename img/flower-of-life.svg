@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" fill="none">
+  <defs>
+    <linearGradient id="magic" x1="80" y1="280" x2="1120" y2="880" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F06A17" stop-opacity=".78"/>
+      <stop offset=".48" stop-color="#9A55FF" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#6D3DD1" stop-opacity=".78"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(600 600) rotate(90) scale(585)">
+      <stop offset=".58" stop-color="#8B4CFF" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#07070A" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="flower" width="120" height="104" patternUnits="userSpaceOnUse">
+      <g stroke="url(#magic)" stroke-width="1.2">
+        <circle cx="0" cy="52" r="60"/>
+        <circle cx="60" cy="0" r="60"/>
+        <circle cx="60" cy="104" r="60"/>
+        <circle cx="120" cy="52" r="60"/>
+      </g>
+    </pattern>
+    <clipPath id="disc"><circle cx="600" cy="600" r="565"/></clipPath>
+  </defs>
+  <circle cx="600" cy="600" r="598" fill="url(#glow)"/>
+  <g clip-path="url(#disc)">
+    <rect x="34" y="34" width="1132" height="1132" fill="url(#flower)"/>
+  </g>
+  <circle cx="600" cy="600" r="565" stroke="url(#magic)" stroke-width="1.4"/>
+  <circle cx="600" cy="600" r="585" stroke="url(#magic)" stroke-width=".8" opacity=".46"/>
+</svg>
