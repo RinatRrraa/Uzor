@@ -1516,10 +1516,9 @@ body {
     display:block;
     width:46px;
     height:46px;
-    object-fit:contain;
+    object-fit:cover;
     border-radius:50%;
-    background:rgba(10,4,20,.58);
-    filter:brightness(2.15) contrast(1.18) saturate(1.35) drop-shadow(0 0 8px rgba(170,88,255,.62));
+    mix-blend-mode:screen;
   }
 }
 
