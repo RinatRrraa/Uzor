@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Фестиваль Узор — три дня музыки, практик и живого общения">
+  <meta name="author" content="Ринат Ягудин">
+  <meta name="application-name" content="Фестиваль Узор">
+  <meta name="theme-color" content="#080510">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="format-detection" content="telephone=no">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="Фестиваль Узор">
+  <meta property="og:title" content="Узор — фестиваль">
+  <meta property="og:description" content="Три дня музыки, практик и живого общения">
+  <meta property="og:image" content="img/hero-background.png">
+  <meta property="og:image:alt" content="Фестиваль Узор на закате">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Узор — фестиваль">
+  <meta name="twitter:description" content="Три дня музыки, практик и живого общения">
+  <meta name="twitter:image" content="img/hero-background.png">
+  <title>Узор — фестиваль</title>
+  <link rel="icon" type="image/png" href="img/logo-white.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=69">
+</head>
+<body>
+  <main>
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero__background" aria-hidden="true"></div>
+      <div class="hero__overlay" aria-hidden="true"></div>
+      <header class="hero__header">
+        <a class="logo" href="#top" aria-label="Узор — на главную">
+          <img class="logo__image" src="img/logo-white.png" alt="Узор" width="194" height="82">
+        </a>
+
+        <nav class="nav" id="main-nav" aria-label="Основная навигация">
+          <a class="nav__link" href="#about">О фестивале</a>
+          <a class="nav__link" href="#program">Программа</a>
+          <a class="nav__link" href="#gallery">Галерея</a>
+          <a class="nav__link" href="#reviews">Отзывы</a>
+          <a class="nav__link" href="#faq">FAQ</a>
+          <a class="nav__ticket" href="#ticket-form" data-ticket-open>Купить билет</a>
+        </nav>
+
+        <a class="hero__button" href="#ticket-form" data-ticket-open>Купить билет</a>
+
+        <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-controls="main-nav" aria-expanded="false">
+          <span class="menu-toggle__line"></span>
+          <span class="menu-toggle__line"></span>
+          <span class="menu-toggle__line"></span>
+        </button>
+      </header>
+
+      <div class="hero__container">
+        <div class="hero__content">
+          <h1 class="hero__title" id="hero-title">ФЕСТИВАЛЬ УЗОР</h1>
+          <p class="hero__description">Три дня музыки, практик и живого общения</p>
+
+          <ul class="hero__info" aria-label="Информация о фестивале">
+            <li class="hero__info-item">
+              <svg class="hero__info-icon" aria-hidden="true" viewBox="0 0 32 32" fill="none"><rect x="4" y="6" width="24" height="22" rx="4"/><path d="M10 3v6M22 3v6M4 12h24"/><circle cx="10" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="22" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="23" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="23" r="1" fill="currentColor" stroke="none"/><circle cx="22" cy="23" r="1" fill="currentColor" stroke="none"/></svg>
+              <span>7–9 августа</span>
+            </li>
+            <li class="hero__info-item">
+              <svg class="hero__info-icon" aria-hidden="true" viewBox="0 0 32 32" fill="none"><path d="M16 29S27 19.2 27 11.8A11 11 0 0 0 5 11.8C5 19.2 16 29 16 29Z"/><circle cx="16" cy="12" r="4"/></svg>
+              <span>Около аномальной зоны Молёбка</span>
+            </li>
+            <li class="hero__info-item">
+              <svg class="hero__info-icon hero__info-icon--no-alcohol" aria-hidden="true" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13"/><path d="M13 6h6M14 6v6l-2 3v8.5c0 1.4 1.1 2.5 2.5 2.5h3c1.4 0 2.5-1.1 2.5-2.5V15l-2-3V6M12 17h8"/><path d="M6 6l20 20"/></svg>
+              <span>Без алкоголя</span>
+            </li>
+          </ul>
+
+          <a class="hero__cta" href="#ticket-form" data-ticket-open>
+            <span>Купить билет</span>
+            <span class="hero__cta-arrow" aria-hidden="true">→</span>
+          </a>
+          <div class="hero__divider" aria-hidden="true"><span></span><img src="img/flower-of-life.png" alt="" width="46" height="46"><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rhythm" id="program" aria-labelledby="rhythm-title">
+      <div class="rhythm__container">
+        <header class="rhythm__header">
+          <h2 class="rhythm__title" id="rhythm-title">
+            <span class="rhythm__title-line"><span class="rhythm__title-accent rhythm__title-accent--day">ДНЁМ</span> ПРАКТИКУЙ</span>
+            <span class="rhythm__title-line"><span class="rhythm__title-accent rhythm__title-accent--night">НОЧЬЮ</span> ТАНЦУЙ</span>
+          </h2>
+        </header>
+
+        <div class="rhythm__grid">
+          <article class="rhythm-card rhythm-card--day">
+            <header class="rhythm-card__header">
+              <svg class="rhythm-card__main-icon" aria-hidden="true" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="14"/><path d="M32 4v10M32 50v10M4 32h10M50 32h10M12 12l7 7M45 45l7 7M52 12l-7 7M19 45l-7 7"/></svg>
+              <div><h3 class="rhythm-card__title">ДЕНЬ</h3><p class="rhythm-card__subtitle">Наполняйся энергией дня</p></div>
+            </header>
+            <ul class="rhythm-card__list">
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M8 10c1-2 2-3 4-3s3 1 4 3M12 8v6M7 13l5 1 5-1M8 10l-3 5 4 2M16 10l3 5-4 2M5 19c3 2 11 2 14 0"/></svg></span><div><strong>Авторские практики</strong><small>Йога, дыхательные и телесные практики</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20c-5-2-7-5-7-9 3 0 5 1 7 4M12 20c5-2 7-5 7-9-3 0-5 1-7 4M12 20c-3-4-3-9 0-13 3 4 3 9 0 13ZM5 16c-2 0-3-1-4-3 2-1 3-1 5 0M19 16c2 0 3-1 4-3-2-1-3-1-5 0"/></svg></span><div><strong>Творческие мастер-классы</strong><small>Новые знания и вдохновение</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 2h4v3h-4V2ZM11 5h2v6h-2V5Z"/><path d="M11 10c-1 1-2 1-3 1-2 0-4 2-4 5 0 4 3 7 8 7s8-3 8-7c0-3-2-5-4-5-1 0-2 0-3-1"/><circle cx="12" cy="16" r="2.5"/><path d="M12 2v21M9 20h6"/></svg></span><div><strong>Живая этническая музыка</strong><small>Акустические сеты и этнические инструменты</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3 20v-3c0-3 2-5 6-5s6 2 6 5v3M15 13c4 0 6 2 6 5v2M7 20v-4M17 20v-4"/></svg></span><div><strong>Круг единомышленников</strong><small>Тёплое комьюнити и новые знакомства</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m2 20 6-11 5 8 3-5 6 8H2ZM17 12V5M14 8l3-4 3 4M15 11h4"/></svg></span><div><strong>Отдых на природе</strong><small>Чистый воздух и тишина леса</small></div></li>
+            </ul>
+          </article>
+
+          <article class="rhythm-card rhythm-card--night">
+            <header class="rhythm-card__header">
+              <svg class="rhythm-card__main-icon" aria-hidden="true" viewBox="0 0 64 64" fill="none"><path d="M48 45A24 24 0 0 1 27 7a24 24 0 1 0 21 38Z"/><path d="m49 11 1.8 4.2L55 17l-4.2 1.8L49 23l-1.8-4.2L43 17l4.2-1.8L49 11Z"/></svg>
+              <div><h3 class="rhythm-card__title">НОЧЬ</h3><p class="rhythm-card__subtitle">Танцуй под звёздами</p></div>
+            </header>
+            <ul class="rhythm-card__list">
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 14v-3a8 8 0 0 1 16 0v3M4 13H2v6h4v-6H4ZM20 13h2v6h-4v-6h2Z"/></svg></span><div><strong>DJ-сеты</strong><small>Электронная музыка до рассвета</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="1"/><circle cx="12" cy="14" r="3"/><circle cx="12" cy="7" r="1"/></svg></span><div><strong>Качественный звук</strong><small>Мощная система и чистое звучание</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 10h12v4a6 6 0 0 1-6 6 6 6 0 0 1-6-6v-4Z"/><path d="M17 12h1.5a2.5 2.5 0 0 1 0 5H16M3 22h17M8 7c-2-2 2-3 0-5M13 7c-2-2 2-3 0-5"/></svg></span><div><strong>Чайная церемония</strong><small>Тёплое общение и ароматный чай</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="12" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/><path d="M10 7h4M10 10h4"/></svg></span><div><strong>Выступления артистов</strong><small>Яркие лайвы и перформансы</small></div></li>
+              <li class="rhythm-card__item"><span class="rhythm-card__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M8 21c.5-4 1-7 1-10l-3 4M16 21c-.5-4-1-7-1-10l3 4M9 10c2 1 4 1 6 0M12 8v8"/><path d="m5 3 .7 1.7L7.5 5.5l-1.8.8L5 8l-.7-1.7-1.8-.8 1.8-.8L5 3Zm14 4 .6 1.4 1.4.6-1.4.6L19 11l-.6-1.4L17 9l1.4-.6L19 7Z"/></svg></span><div><strong>Неоновый боди-арт</strong><small>Светящиеся краски и яркие образы</small></div></li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="rhythm__divider" aria-hidden="true"><span></span><img src="img/flower-of-life.png" alt="" width="64" height="64"><span></span></div>
+      </div>
+    </section>
+
+    <section class="trust" id="about" aria-labelledby="trust-title">
+      <div class="trust__container">
+        <header class="trust__header">
+          <h2 class="trust__title" id="trust-title">
+            <span>БЕЗ АЛКОГОЛЯ</span>
+            <span class="trust__title-accent trust__title-accent--purple">С АТМОСФЕРОЙ</span>
+            <span class="trust__title-accent trust__title-accent--orange">ДОВЕРИЯ И СВОБОДЫ</span>
+          </h2>
+        </header>
+
+        <div class="trust__grid">
+          <article class="trust-card trust-card--orange">
+            <div class="trust-card__icon">
+              <svg aria-hidden="true" viewBox="0 0 64 64" fill="none"><circle cx="22" cy="21" r="8"/><circle cx="45" cy="21" r="8"/><path d="M8 49V39c0-7 5-11 14-11 5 0 9 2 11 5 2-3 6-5 12-5 8 0 12 4 12 11v10M9 49h48"/><path d="M33 49 22 38c-5-5 3-12 8-7l3 3 3-3c5-5 13 2 8 7L33 49Z"/></svg>
+            </div>
+            <span class="trust-card__line"></span>
+            <h3 class="trust-card__title">НОВЫЕ ЗНАКОМСТВА</h3>
+            <p class="trust-card__description">Открытое комьюнити и дружеская атмосфера помогают находить единомышленников.</p>
+          </article>
+
+          <article class="trust-card trust-card--purple">
+            <div class="trust-card__icon">
+              <svg aria-hidden="true" viewBox="0 0 64 64" fill="none"><path d="M32 5c8 7 16 8 23 9v17c0 14-9 23-23 29C18 54 9 45 9 31V14c7-1 15-2 23-9Z"/><path d="M32 46V25M32 40c-9 0-14-5-14-13 8 0 14 5 14 13ZM32 34c0-8 5-13 13-13 0 8-5 13-13 13Z"/></svg>
+            </div>
+            <span class="trust-card__line"></span>
+            <h3 class="trust-card__title">КОМФОРТ И БЕЗОПАСНОСТЬ</h3>
+            <p class="trust-card__description">На территории фестиваля отсутствует алкоголь. Здесь нет пьяных компаний, агрессивного поведения и ситуаций, которые мешают отдыху.</p>
+          </article>
+
+          <article class="trust-card trust-card--pink">
+            <div class="trust-card__icon">
+              <svg aria-hidden="true" viewBox="0 0 64 64" fill="none"><path d="m9 51 16-29 17 29H9ZM25 22l8 29M44 51h15M51 51V29M45 36l6-10 7 10M47 42h8"/><path d="m9 14 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5ZM46 5l2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z"/></svg>
+            </div>
+            <span class="trust-card__line"></span>
+            <h3 class="trust-card__title">ПЕРЕЗАГРУЗКА</h3>
+            <p class="trust-card__description">Три дня вдали от городской суеты помогают переключиться, восстановить силы и наполниться энергией.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="gallery" id="gallery" aria-labelledby="gallery-title">
+      <div class="gallery__container">
+        <div class="gallery__intro">
+          <h2 class="gallery__title" id="gallery-title">Каждый Узор оставляет<br><span>яркие воспоминания</span></h2>
+        </div>
+        <div class="gallery__carousel">
+          <button class="gallery__arrow gallery__arrow--prev" type="button" aria-label="Предыдущие фотографии">←</button>
+          <div class="gallery__viewport" role="region" aria-label="Фотогалерея фестиваля" tabindex="0">
+            <div class="gallery__track">
+              <button class="gallery__slide" type="button" data-gallery-index="0"><img src="img/carousel-01.webp" alt="Фотография фестиваля Узор" loading="eager" fetchpriority="high"></button>
+              <button class="gallery__slide" type="button" data-gallery-index="1"><img src="img/carousel-02.webp" alt="Гости фестиваля Узор" loading="eager"></button>
+              <button class="gallery__slide" type="button" data-gallery-index="2"><img src="img/carousel-03.webp" alt="Атмосфера фестиваля Узор" loading="eager"></button>
+              <button class="gallery__slide" type="button" data-gallery-index="3"><img src="img/carousel-04.webp" alt="Природа фестиваля Узор" loading="eager"></button>
+            </div>
+          </div>
+          <button class="gallery__arrow gallery__arrow--next" type="button" aria-label="Следующие фотографии">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="location" id="location" aria-labelledby="location-title">
+      <div class="location__container">
+        <header class="location__header">
+          <h2 class="location__title" id="location-title"><span>Природа</span> становится<br>частью фестиваля</h2>
+        </header>
+        <div class="location__layout">
+          <div class="location__content">
+          <ul class="location__features">
+            <li><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 13 19h7L10 32h10v10h8V32h10L28 19h7L24 4Z"/></svg></span><div><strong>Лес</strong><small>Вокруг только лес и чистый воздух</small></div></li>
+            <li><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M32 36A16 16 0 0 1 23 7a16 16 0 1 0 9 29Z"/><path d="m35 9 1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Zm6 10 .8 2.2L44 22l-2.2.8L41 25l-.8-2.2L38 22l2.2-.8L41 19Z"/></svg></span><div><strong>Звёздное небо</strong><small>Млечный путь здесь виден как на ладони</small></div></li>
+            <li><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 43S10 30 10 19a14 14 0 1 1 28 0c0 11-14 24-14 24Z"/><circle cx="24" cy="19" r="5"/></svg></span><div><strong>Около аномальной зоны Молёбка</strong><small>Рядом с самой загадочной точкой России</small></div></li>
+            <li><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 42c14-10 5-23 18-36M23 42c13-9 5-22 16-34"/><path d="m8 13 6-6 6 6"/></svg></span><div><strong>150 км от Перми</strong><small>Асфальтированная дорога до фестиваля</small></div></li>
+            <li><span><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 13 17h7L10 29h10L8 39h12v6h8v-6h12L28 29h10L28 17h7L24 3Z"/></svg></span><div><strong>370-летняя сосна</strong><small>Всего 10 минут пешком от фестиваля</small></div></li>
+          </ul>
+          </div>
+          <div class="route-card" aria-label="Маршрут до фестиваля">
+            <div class="route-card__point route-card__point--start"><span class="route-card__marker route-card__marker--start"></span><strong>Пермь</strong></div>
+            <div class="route-card__distance">150 км</div>
+            <div class="route-card__line"></div>
+            <div class="route-card__point route-card__point--festival"><span class="route-card__marker route-card__marker--festival"></span><div><strong>Место проведения фестиваля</strong><small>Около аномальной зоны Молёбка</small></div></div>
+            <div class="route-card__point route-card__point--pine"><svg class="route-card__pine" viewBox="0 0 64 80" aria-hidden="true"><path d="M32 3 17 24h9L12 43h11L8 62h20v15h8V62h20L41 43h11L38 24h9L32 3Z"/></svg><div><strong>370-летняя сосна</strong><small>10 минут пешком от фестиваля</small></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="festival-video" id="video" aria-labelledby="video-title">
+      <div class="festival-video__container">
+        <div class="festival-video__intro">
+          <h2 class="festival-video__title" id="video-title"><span class="festival-video__action">Жми <i class="festival-video__inline-play" aria-hidden="true"></i></span><br>Почувствуй<br>атмосферу <span>Узора</span></h2>
+        </div>
+        <div class="festival-video__media">
+          <video class="festival-video__player" poster="img/video-poster.jpg" preload="metadata">
+            <source src="Видео/uzor-atmosphere-web.mp4" type="video/mp4">
+          </video>
+          <button class="festival-video__play" type="button" aria-label="Воспроизвести видео"><span></span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+      <div class="reviews__container">
+        <header class="reviews__header">
+          <h2 class="reviews__title" id="reviews-title">Почему возвращаются<br>на <span>Узор</span></h2>
+        </header>
+        <div class="reviews__carousel">
+          <button class="reviews__arrow reviews__arrow--prev" type="button" aria-label="Предыдущий отзыв">←</button>
+          <div class="reviews__viewport" role="region" aria-label="Отзывы участников" tabindex="0"><div class="reviews__track">
+          <article class="review-card"><h3>Надежда</h3><p>Первый раз попала в такое пространство. Всё было очень мощно — атмосфера, мастера, люди. Приехала с дочерью, а теперь она тоже хочет вернуться на Узор.</p></article>
+          <article class="review-card"><h3>Валерия</h3><p>Спасибо за тёплую и доброжелательную атмосферу. Было ощущение, что мы давно знакомы. До новых встреч на Узоре.</p></article>
+          <article class="review-card"><h3>Владислав</h3><p>Больше всего запомнились разговоры у костра, свежесть после дождя и закат. Уже потом понимаешь, насколько особенными были эти три дня.</p></article>
+          <article class="review-card"><h3>Алексей</h3><p>За три дня познакомился с людьми, с которыми общаюсь уже несколько лет.</p></article>
+          <article class="review-card"><h3>Инесса</h3><p>Тепло, душевно и танцевально. Всё это — среди близких по духу людей. Чувствовала себя частью большой семьи.</p></article>
+          <article class="review-card"><h3>Ольга</h3><p>Красивое и глубокое пространство. Сильные мастера, музыка, танцы и люди, которые создают особую атмосферу. Узор — это любовь.</p></article>
+          <article class="review-card"><h3>Олег</h3><p>Спасибо организаторам, мастерам и музыкантам. Именно сочетание практик, музыки и атмосферы делает этот фестиваль особенным.</p></article>
+          <article class="review-card"><h3>Андрей</h3><p>Каждый раз убеждаюсь, что Узор проходит в особенном месте. Спасибо всей команде за фестиваль, в который хочется возвращаться.</p></article>
+          </div></div>
+          <button class="reviews__arrow reviews__arrow--next" type="button" aria-label="Следующий отзыв">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="tickets" id="tickets" aria-labelledby="tickets-title">
+      <div class="tickets__container">
+        <header class="tickets__header">
+          <h2 class="tickets__title" id="tickets-title">Выбери формат участия</h2>
+        </header>
+        <div class="tickets__grid">
+          <article class="ticket-card ticket-card--day">
+            <p class="ticket-card__label">1 ДЕНЬ</p><p class="ticket-card__price">2800 ₽</p>
+            <p class="ticket-card__description">Для тех, кого интересуют только дневные практики</p>
+            <a class="ticket-card__button" href="#ticket-form" data-ticket-open data-ticket-type="day">КУПИТЬ БИЛЕТ <span>→</span></a>
+          </article>
+          <article class="ticket-card ticket-card--full">
+            <p class="ticket-card__label">3 ДНЯ</p><p class="ticket-card__price">3300 ₽</p>
+            <p class="ticket-card__description">Полное погружение в атмосферу фестиваля</p>
+            <a class="ticket-card__button" href="#ticket-form" data-ticket-open data-ticket-type="full">КУПИТЬ БИЛЕТ <span>→</span></a>
+          </article>
+        </div>
+        <div class="tickets__includes">
+          <h3>В каждый билет входит</h3>
+          <ul><li>Посещение фестиваля</li><li>Все дневные практики</li><li>Вечерняя программа</li><li>Чайные церемонии</li><li>Доступ в палаточный лагерь</li><li>Бесплатная парковка</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="faq__container">
+        <header class="faq__header"><h2 class="faq__title" id="faq-title">Частые вопросы</h2></header>
+        <div class="faq__list">
+          <article class="faq-item"><button class="faq-item__question" type="button" aria-expanded="false"><span>Где проходит фестиваль</span><i></i></button><div class="faq-item__answer"><p>Фестиваль проходит около аномальной зоны Молёбка, в 150 км от Перми. Точные координаты даются после покупки билета.</p></div></article>
+          <article class="faq-item"><button class="faq-item__question" type="button" aria-expanded="false"><span>Как добраться</span><i></i></button><div class="faq-item__answer"><p>До фестиваля можно добраться на автомобиле, фестивальном трансфере или электричке.</p></div></article>
+          <article class="faq-item"><button class="faq-item__question" type="button" aria-expanded="false"><span>Где жить</span><i></i></button><div class="faq-item__answer"><p>На территории работает палаточный лагерь. Можно приехать со своей палаткой или арендовать туристический инвентарь на месте.</p></div></article>
+          <article class="faq-item"><button class="faq-item__question" type="button" aria-expanded="false"><span>Что взять с собой</span><i></i></button><div class="faq-item__answer"><p>Возьмите туристический инвентарь, тёплую и удобную одежду, солнцезащитный крем, дождевик и средства от комаров и клещей.</p></div></article>
+          <article class="faq-item"><button class="faq-item__question" type="button" aria-expanded="false"><span>Можно ли приехать с детьми</span><i></i></button><div class="faq-item__answer"><p>Да, на Узор приезжают всей семьёй. Для детей до 9 лет вход бесплатный, а с 9 до 15 лет действует скидка 50 %.</p></div></article>
+          <article class="faq-item"><button class="faq-item__question" type="button" aria-expanded="false"><span>Почему фестиваль без алкоголя</span><i></i></button><div class="faq-item__answer"><p>Отсутствие алкоголя помогает сохранять безопасную и комфортную атмосферу, живое и душевное общение.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="final" aria-labelledby="final-title">
+      <div class="final-cta__container">
+        <img class="final-cta__ornament" src="img/flower-of-life-transparent.png" alt="" width="96" height="96">
+        <h2 class="final-cta__title" id="final-title">До встречи<br>на <span>Узоре</span></h2>
+        <div class="final-cta__details"><strong>7–9 АВГУСТА</strong><span>ОКОЛО АНОМАЛЬНОЙ ЗОНЫ МОЛЁБКА</span></div>
+        <a class="final-cta__button" href="#ticket-form" data-ticket-open>КУПИТЬ БИЛЕТ <span>→</span></a>
+        <p class="final-cta__social-label">Подробности в социальных сетях</p>
+        <div class="final-cta__socials">
+          <a href="https://t.me/uzor_ru" target="_blank" rel="noopener noreferrer" aria-label="Telegram фестиваля Узор"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10l7 2 2 7 9-16Zm-11 9 8-6-6 8-2-2Z"/></svg></a>
+          <a href="https://vk.ru/uzor_rus" target="_blank" rel="noopener noreferrer" aria-label="VK фестиваля Узор"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c.4 4 2 6 3 6V7h4v4c1-1 2-2 3-4h4c-1 3-3 5-4 6 2 1 4 3 5 5h-5c-1-2-2-3-3-3v3h-2C7 18 4 14 3 7Z"/></svg></a>
+          <a href="https://www.instagram.com/uzor_rus" target="_blank" rel="noopener noreferrer" aria-label="Instagram фестиваля Узор"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="social-dot"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="ticket-modal" id="ticket-form" aria-labelledby="ticket-modal-title">
+    <div class="ticket-modal__panel">
+      <button class="ticket-modal__close" type="button" aria-label="Закрыть форму">×</button>
+      <div class="ticket-modal__content">
+        <h2 class="ticket-modal__title" id="ticket-modal-title">Получить билет</h2>
+        <p class="ticket-modal__subtitle">Оставьте контакты, и мы поможем оформить участие</p>
+        <form class="ticket-form" data-telegram-endpoint="" novalidate>
+          <label class="ticket-form__field"><span>Имя</span><input type="text" name="name" autocomplete="name" aria-describedby="name-error" required><small class="ticket-form__field-error" id="name-error" hidden>Укажите имя</small></label>
+          <label class="ticket-form__field"><span>Телефон или ссылка на социальную сеть</span><input type="text" name="contact" autocomplete="off" placeholder="+7 900 000-00-00 или @username" aria-describedby="contact-error" required><small class="ticket-form__field-error" id="contact-error" hidden>Укажите телефон или ссылку на социальную сеть</small></label>
+          <fieldset class="ticket-form__options">
+            <legend>Вариант билета</legend>
+            <label><input type="radio" name="ticket" value="1 день" required><span><strong>1 день</strong><small>2800 ₽</small></span></label>
+            <label><input type="radio" name="ticket" value="Полный билет" checked required><span><strong>Полный билет</strong><small>3300 ₽</small></span></label>
+          </fieldset>
+          <input class="ticket-form__trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="ticket-form__submit" type="submit"><span>Отправить</span></button>
+          <p class="ticket-form__error" role="alert" tabindex="-1" hidden></p>
+        </form>
+        <div class="ticket-modal__success" role="status" aria-live="polite" tabindex="-1" hidden>
+          <span aria-hidden="true">✓</span>
+          <p>Благодарим за выбор фестиваля Узор! В скором времени вам напишут и помогут получить билет</p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фотографий" hidden>
+    <button class="lightbox__close" type="button" aria-label="Закрыть">×</button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Предыдущая фотография">←</button>
+    <img class="lightbox__image" src="" alt="Фотография фестиваля Узор">
+    <p class="lightbox__status" aria-live="polite"></p>
+    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Следующая фотография">→</button>
+  </div>
+
+  <script src="js/script.js?v=18"></script>
+</body>
+</html>

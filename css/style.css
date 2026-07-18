@@ -83,7 +83,7 @@ button { font: inherit; }
 
 .hero__overlay {
   z-index: -1;
-  background: linear-gradient(90deg, rgba(0,0,0,.54) 0%, rgba(0,0,0,.30) 47%, rgba(0,0,0,.23) 100%);
+  background: linear-gradient(90deg, rgba(0,0,0,.46) 0%, rgba(0,0,0,.22) 47%, rgba(0,0,0,.16) 100%);
 }
 
 .hero__header {
@@ -242,8 +242,8 @@ button { font: inherit; }
   .hero__background { background-position: 86% center; }
   .hero__overlay {
     background:
-      linear-gradient(90deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.30) 72%, rgba(0,0,0,.20) 100%),
-      linear-gradient(180deg, rgba(0,0,0,.52) 0%, rgba(0,0,0,.27) 64%, rgba(0,0,0,.40) 100%);
+      linear-gradient(90deg, rgba(0,0,0,.36) 0%, rgba(0,0,0,.24) 72%, rgba(0,0,0,.16) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.21) 64%, rgba(0,0,0,.34) 100%);
   }
 
   .hero::before {
