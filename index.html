@@ -28,6 +28,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=69">
+  <script type="module" src="js/speed-insights-init.js"></script>
 </head>
 <body>
   <main>
@@ -317,7 +318,7 @@
           <fieldset class="ticket-form__options">
             <legend>Вариант билета</legend>
             <label><input type="radio" name="ticket" value="1 день" required><span><strong>1 день</strong><small>2800 ₽</small></span></label>
-            <label><input type="radio" name="ticket" value="Полный билет" checked required><span><strong>Полный билет</strong><small>3300 ₽</small></span></label>
+            <label><input type="radio" name="ticket" value="Полный билет" checked required><span><strong>Полный ��илет</strong><small>3300 ₽</small></span></label>
           </fieldset>
           <input class="ticket-form__trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button class="ticket-form__submit" type="submit"><span>Отправить</span></button>
@@ -340,11 +341,5 @@
   </div>
 
   <script src="js/script.js?v=18"></script>
-  <script>
-    window.si = window.si || function () {
-      (window.siq = window.siq || []).push(arguments);
-    };
-  </script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
