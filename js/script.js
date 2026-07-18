@@ -152,9 +152,9 @@ if (menuButton && navigation) {
     const sectionHeight = target.getBoundingClientRect().height;
     const sectionTop = target.getBoundingClientRect().top + window.scrollY;
     const centeredOffset = Math.max(0, (availableHeight - sectionHeight) / 2);
-    const galleryOffset = target.id === 'gallery' && !mobile ? 64 : 0;
+    const desktopSectionOffset = !mobile && target.id === 'about' ? -40 : !mobile && target.id === 'gallery' ? 64 : 0;
     const mobileSectionOffset = mobile && target.id === 'about' ? 12 : mobile && target.id === 'faq' ? 48 : 0;
-    const destination = Math.max(0, sectionTop - topClearance - centeredOffset + galleryOffset + mobileSectionOffset);
+    const destination = Math.max(0, sectionTop - topClearance - centeredOffset + desktopSectionOffset + mobileSectionOffset);
 
     window.scrollTo({ top: destination, behavior: 'smooth' });
   };
