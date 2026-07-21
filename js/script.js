@@ -4,10 +4,11 @@ const siteHeader = document.querySelector('.hero__header');
 
 // Instagram/Threads WebViews sometimes reuse the last scroll offset for a URL
 // even when it is opened as a new in-app browser page.
-const isMetaInAppBrowser = /Instagram|Threads|Barcelona|FBAN|FBAV/i.test(navigator.userAgent)
+const isMetaInAppBrowser = /Instagram|Threads|Barcelona|FBAN|FBAV|;\s*wv\)/i.test(navigator.userAgent)
   || /(^|\.)threads\.net$/i.test(document.referrer ? new URL(document.referrer).hostname : '');
 
 if (isMetaInAppBrowser && !window.location.hash) {
+  document.documentElement.classList.add('in-app-webview');
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   const resetInitialScroll = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   resetInitialScroll();
