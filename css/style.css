@@ -10,8 +10,8 @@
 
 html {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 body {
@@ -1624,7 +1624,7 @@ body {
 @media (max-width: 767px) {
   /* Android social-app WebViews otherwise enlarge body copy independently
      from the layout and break the approved 390 px mobile composition. */
-  body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { -webkit-text-size-adjust: none; text-size-adjust: none; }
 
   /* One complete item per frame: adjacent gallery/review cards stay hidden. */
   .gallery__carousel,
