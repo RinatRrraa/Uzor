@@ -1618,6 +1618,19 @@ body {
 
 /* Mobile header flush with the top edge */
 @media (max-width: 767px) {
+  /* In-app browsers can overlay their controls without reducing 100svh.
+     Let the hero grow so none of its content is clipped underneath them. */
+  .hero {
+    height: auto;
+    min-height: 100svh;
+    max-height: none;
+    overflow: clip;
+  }
+
+  .hero__container {
+    min-height: calc(100svh - 28px);
+  }
+
   .hero__header,
   .hero__header.is-scrolled,
   body.menu-open .hero__header {
