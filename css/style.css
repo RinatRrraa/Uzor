@@ -8,7 +8,11 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   position: relative;
@@ -1618,6 +1622,28 @@ body {
 
 /* Mobile header flush with the top edge */
 @media (max-width: 767px) {
+  /* Android social-app WebViews otherwise enlarge body copy independently
+     from the layout and break the approved 390 px mobile composition. */
+  body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+  /* One complete item per frame: adjacent gallery/review cards stay hidden. */
+  .gallery__carousel,
+  .reviews__carousel { padding-inline: 0; }
+
+  .gallery__track,
+  .reviews__track { gap: 0; }
+
+  .gallery__slide,
+  .reviews__track .review-card {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .reviews__track { padding: 2px 0 10px; }
+
   /* In-app browsers can overlay their controls without reducing 100svh.
      Let the hero grow so none of its content is clipped underneath them. */
   .hero {
