@@ -6,9 +6,13 @@ const siteHeader = document.querySelector('.hero__header');
 // even when it is opened as a new in-app browser page.
 const isMetaInAppBrowser = /Instagram|Threads|Barcelona|FBAN|FBAV|;\s*wv\)/i.test(navigator.userAgent)
   || /(^|\.)threads\.net$/i.test(document.referrer ? new URL(document.referrer).hostname : '');
+const forceCompactWebView = new URLSearchParams(window.location.search).has('threads');
 
-if (isMetaInAppBrowser && !window.location.hash) {
+if (isMetaInAppBrowser || forceCompactWebView) {
   document.documentElement.classList.add('in-app-webview');
+}
+
+if ((isMetaInAppBrowser || forceCompactWebView) && !window.location.hash) {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   const resetInitialScroll = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   resetInitialScroll();
