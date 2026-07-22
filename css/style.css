@@ -34,8 +34,8 @@
 
 html {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: none;
-  text-size-adjust: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -53,7 +53,7 @@ body::before {
   position: fixed;
   z-index: -1;
   inset: 0;
-  background: #07070a url("../img/flower-of-life-canvas.png") center center / cover no-repeat;
+  background: #07070a url("../img/flower-of-life-canvas.webp") center center / cover no-repeat;
   filter: brightness(.8);
   pointer-events: none;
 }
@@ -78,7 +78,7 @@ button { font: inherit; }
   bottom: 0;
   left: 0;
   height: clamp(240px, 30vh, 320px);
-  background: url("../img/flower-of-life-canvas.png") center center / cover no-repeat fixed;
+  background: url("../img/flower-of-life-canvas.webp") center center / cover no-repeat fixed;
   opacity: .72;
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.18) 25%, #000 100%);
   mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.18) 25%, #000 100%);
@@ -105,7 +105,7 @@ button { font: inherit; }
 }
 
 .hero__background {
-  background: url("../img/hero-background.png") center center / cover no-repeat;
+  background: url("../img/hero-background.webp") center center / cover no-repeat;
   transform: scale(1.002);
 }
 
@@ -1648,7 +1648,7 @@ body {
 @media (max-width: 767px) {
   /* Android social-app WebViews otherwise enlarge body copy independently
      from the layout and break the approved 390 px mobile composition. */
-  body { -webkit-text-size-adjust: none; text-size-adjust: none; }
+  html.in-app-webview { -webkit-text-size-adjust: none; text-size-adjust: none; }
 
   /* One complete item per frame: adjacent gallery/review cards stay hidden. */
   .gallery__carousel,
