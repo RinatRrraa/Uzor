@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.uzor-fest.ru/sitemap.xml
+Sitemap: https://uzor.vercel.app/sitemap.xml
