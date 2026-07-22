@@ -1,18 +1,23 @@
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('.nav');
 const siteHeader = document.querySelector('.hero__header');
+window.si = window.si || function () {
+  (window.siq = window.siq || []).push(arguments);
+};
 
-// Instagram/Threads WebViews sometimes reuse the last scroll offset for a URL
-// even when it is opened as a new in-app browser page.
-const isMetaInAppBrowser = /Instagram|Threads|Barcelona|FBAN|FBAV|;\s*wv\)/i.test(navigator.userAgent)
+// The compact layout is only for the problematic Android Threads WebView.
+const userAgent = navigator.userAgent;
+const isAndroid = /Android/i.test(userAgent);
+const isThreadsWebView = /Threads|Barcelona/i.test(userAgent)
   || /(^|\.)threads\.net$/i.test(document.referrer ? new URL(document.referrer).hostname : '');
-const forceCompactWebView = new URLSearchParams(window.location.search).has('threads');
+const forceCompactWebView = new URLSearchParams(window.location.search).get('threads') === '1';
+const useCompactWebView = isAndroid && (isThreadsWebView || forceCompactWebView);
 
-if (isMetaInAppBrowser || forceCompactWebView) {
+if (useCompactWebView) {
   document.documentElement.classList.add('in-app-webview');
 }
 
-if ((isMetaInAppBrowser || forceCompactWebView) && !window.location.hash) {
+if (useCompactWebView && !window.location.hash) {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   const resetInitialScroll = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   resetInitialScroll();
@@ -37,6 +42,8 @@ if (ticketModal && ticketForm) {
   const submitLabel = submitButton.querySelector('span');
 
   let ticketTrigger = null;
+  let formOpenedAt = 0;
+  let lastSubmissionAt = 0;
 
   const openTicketModal = (ticketType, trigger) => {
     ticketTrigger = trigger || document.activeElement;
@@ -44,6 +51,7 @@ if (ticketModal && ticketForm) {
     successMessage.hidden = true;
     errorMessage.hidden = true;
     errorMessage.textContent = '';
+    formOpenedAt = Date.now();
     ticketForm.querySelectorAll('[aria-invalid="true"]').forEach((field) => field.removeAttribute('aria-invalid'));
     ticketForm.querySelectorAll('.ticket-form__field-error').forEach((message) => { message.hidden = true; });
 
@@ -75,7 +83,8 @@ if (ticketModal && ticketForm) {
     let firstInvalid = null;
 
     requiredFields.forEach((field) => {
-      const invalid = !field.value.trim();
+      const value = field.value.trim();
+      const invalid = !value || !field.checkValidity();
       field.toggleAttribute('aria-invalid', invalid);
       const message = field.closest('.ticket-form__field')?.querySelector('.ticket-form__field-error');
       if (message) message.hidden = !invalid;
@@ -87,31 +96,33 @@ if (ticketModal && ticketForm) {
       return;
     }
 
-    const endpoint = ticketForm.dataset.telegramEndpoint;
+    const endpoint = ticketForm.action;
     const formData = new FormData(ticketForm);
 
     if (formData.get('website')) return;
-    if (!endpoint) {
-      errorMessage.textContent = 'Форма готова, но отправка станет доступна после подключения Telegram.';
+    if (Date.now() - formOpenedAt < 1500 || Date.now() - lastSubmissionAt < 15000) {
+      errorMessage.textContent = 'Подождите несколько секунд и попробуйте снова.';
       errorMessage.hidden = false;
-      errorMessage.focus?.();
       return;
     }
-
     submitButton.disabled = true;
     submitButton.classList.add('is-loading');
     submitLabel.textContent = 'Отправляем…';
     errorMessage.hidden = true;
+    lastSubmissionAt = Date.now();
 
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.get('name'),
-          contact: formData.get('contact'),
+          name: String(formData.get('name')).trim(),
+          contact: String(formData.get('contact')).trim(),
           ticket: formData.get('ticket'),
-          page: window.location.href
+          website: formData.get('website'),
+          openedAt: formOpenedAt,
+          submissionId: window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+          page: `${window.location.origin}${window.location.pathname}`
         })
       });
 
