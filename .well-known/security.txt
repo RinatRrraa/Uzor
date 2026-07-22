@@ -1,0 +1,4 @@
+Contact: https://t.me/uzor_ru
+Preferred-Languages: ru
+Canonical: https://uzor.vercel.app/.well-known/security.txt
+Expires: 2027-07-22T00:00:00.000Z
