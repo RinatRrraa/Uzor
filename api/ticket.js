@@ -42,8 +42,18 @@ const consumeMemoryLimit = (key, limit, now) => {
 };
 
 const consumeLimit = async (key, limit, now) => {
-  const redisUrl = String(process.env.RATE_LIMIT_REDIS_URL || '').replace(/\/$/, '');
-  const redisToken = String(process.env.RATE_LIMIT_REDIS_TOKEN || '');
+  const redisUrl = String(
+    process.env.RATE_LIMIT_REDIS_URL ||
+      process.env.UPSTASH_REDIS_REST_URL ||
+      process.env.UPSTASH_REDIS_REST_KV_REST_API_URL ||
+      ''
+  ).replace(/\/$/, '');
+  const redisToken = String(
+    process.env.RATE_LIMIT_REDIS_TOKEN ||
+      process.env.UPSTASH_REDIS_REST_TOKEN ||
+      process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN ||
+      ''
+  );
   if (!redisUrl || !redisToken) return consumeMemoryLimit(key, limit, now);
   try {
     const parsedRedisUrl = new URL(redisUrl);
