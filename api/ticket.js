@@ -2,6 +2,7 @@ const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_IP = 5;
 const MAX_PER_CONTACT = 3;
 const MAX_BODY_BYTES = 4096;
+const { createHash } = require('node:crypto');
 const attempts = globalThis.__uzorTicketAttempts || new Map();
 globalThis.__uzorTicketAttempts = attempts;
 
@@ -24,7 +25,9 @@ const clientIp = (req) => clean(
   128
 ).split(',')[0].trim();
 
-const consumeLimit = (key, limit, now) => {
+const fingerprint = (value) => createHash('sha256').update(String(value)).digest('hex');
+
+const consumeMemoryLimit = (key, limit, now) => {
   if (attempts.size > 2000) {
     for (const [storedKey, times] of attempts) {
       if (!times.some((time) => now - time < WINDOW_MS)) attempts.delete(storedKey);
@@ -36,6 +39,43 @@ const consumeLimit = (key, limit, now) => {
   recent.push(now);
   attempts.set(key, recent);
   return true;
+};
+
+const consumeLimit = async (key, limit, now) => {
+  const redisUrl = String(process.env.RATE_LIMIT_REDIS_URL || '').replace(/\/$/, '');
+  const redisToken = String(process.env.RATE_LIMIT_REDIS_TOKEN || '');
+  if (!redisUrl || !redisToken) return consumeMemoryLimit(key, limit, now);
+  try {
+    const parsedRedisUrl = new URL(redisUrl);
+    if (parsedRedisUrl.protocol !== 'https:' || !parsedRedisUrl.hostname.endsWith('.upstash.io')) {
+      throw new Error('RATE_LIMIT_REDIS_URL must be an Upstash HTTPS endpoint');
+    }
+  } catch (error) {
+    console.error('Invalid durable rate limit configuration', error instanceof Error ? error.message : 'unknown');
+    return consumeMemoryLimit(key, limit, now);
+  }
+
+  const windowSeconds = Math.ceil(WINDOW_MS / 1000);
+  const script = 'local n=redis.call("INCR",KEYS[1]); if n==1 then redis.call("EXPIRE",KEYS[1],ARGV[1]) end; return n';
+  try {
+    const response = await fetch(redisUrl, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${redisToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(['EVAL', script, '1', `uzor:ticket:${key}`, String(windowSeconds)]),
+      signal: AbortSignal.timeout(2500)
+    });
+    if (!response.ok) throw new Error(`rate limit store returned ${response.status}`);
+    const result = await response.json();
+    const count = Number(result.result);
+    if (!Number.isFinite(count)) throw new Error('rate limit store returned an invalid count');
+    return count <= limit;
+  } catch (error) {
+    console.error('Durable rate limit unavailable', error instanceof Error ? error.message : 'unknown');
+    return consumeMemoryLimit(key, limit, now);
+  }
 };
 
 const validContact = (contact) => {
@@ -61,7 +101,13 @@ module.exports = async function handler(req, res) {
 
   const origin = clean(req.headers.origin, 256);
   const fetchSite = clean(req.headers['sec-fetch-site'], 32);
-  const allowedOrigins = new Set(['https://uzor.vercel.app']);
+  const allowedOrigins = new Set(
+    String(process.env.ALLOWED_ORIGINS || 'https://uzor.vercel.app')
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean)
+  );
+  if (process.env.VERCEL_URL) allowedOrigins.add(`https://${process.env.VERCEL_URL}`);
   if (!allowedOrigins.has(origin) || (fetchSite && fetchSite !== 'same-origin')) {
     return json(res, 403, { ok: false, message: 'Запрос отклонён' });
   }
@@ -80,11 +126,12 @@ module.exports = async function handler(req, res) {
   const contact = clean(body.contact, 160);
   const ticket = clean(body.ticket, 32);
   const website = clean(body.website, 200);
+  const privacyAccepted = body.privacyAccepted === true;
   const submissionId = clean(body.submissionId, 100);
   const openedAt = Number(body.openedAt);
   const now = Date.now();
 
-  if (website || !submissionId || !Number.isFinite(openedAt) || now - openedAt < 1200 || now - openedAt > 2 * 60 * 60 * 1000) {
+  if (website || !privacyAccepted || !submissionId || !Number.isFinite(openedAt) || now - openedAt < 1200 || now - openedAt > 2 * 60 * 60 * 1000) {
     return json(res, 400, { ok: false, message: 'Не удалось проверить форму' });
   }
 
@@ -97,9 +144,12 @@ module.exports = async function handler(req, res) {
   }
 
   const ip = clientIp(req);
-  if (!consumeLimit(`ip:${ip}`, MAX_PER_IP, now) ||
-      !consumeLimit(`contact:${contact.toLowerCase()}`, MAX_PER_CONTACT, now) ||
-      !consumeLimit(`submission:${submissionId}`, 1, now)) {
+  const [ipAllowed, contactAllowed, submissionAllowed] = await Promise.all([
+    consumeLimit(`ip:${fingerprint(ip)}`, MAX_PER_IP, now),
+    consumeLimit(`contact:${fingerprint(contact.toLowerCase())}`, MAX_PER_CONTACT, now),
+    consumeLimit(`submission:${fingerprint(submissionId)}`, 1, now)
+  ]);
+  if (!ipAllowed || !contactAllowed || !submissionAllowed) {
     return json(res, 429, { ok: false, message: 'Слишком много попыток. Попробуйте позже' });
   }
 
@@ -113,7 +163,7 @@ module.exports = async function handler(req, res) {
     const upstream = await fetch(webhook, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, contact, ticket, source: 'uzor.vercel.app' }),
+      body: JSON.stringify({ name, contact, ticket, privacyAccepted: true, source: origin }),
       signal: AbortSignal.timeout(8000)
     });
     if (!upstream.ok) throw new Error(`Make returned ${upstream.status}`);

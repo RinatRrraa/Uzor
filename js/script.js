@@ -26,8 +26,32 @@ if (useCompactWebView && !window.location.hash) {
 }
 
 if (siteHeader) {
-  const updateHeader = () => siteHeader.classList.toggle('is-scrolled', window.scrollY > 48);
-  window.addEventListener('scroll', updateHeader, { passive: true });
+  let previousScrollY = window.scrollY;
+  let headerFramePending = false;
+  const updateHeader = () => {
+    const currentScrollY = window.scrollY;
+    const mobile = window.matchMedia('(max-width: 767px)').matches;
+    siteHeader.classList.toggle('is-scrolled', currentScrollY > 48);
+
+    if (!mobile || document.body.classList.contains('menu-open') || document.body.classList.contains('is-anchor-scrolling')) {
+      siteHeader.classList.remove('is-hidden');
+    } else if (currentScrollY < 80 || currentScrollY < previousScrollY - 8) {
+      siteHeader.classList.remove('is-hidden');
+      previousScrollY = currentScrollY;
+    } else if (currentScrollY > previousScrollY + 12) {
+      siteHeader.classList.add('is-hidden');
+      previousScrollY = currentScrollY;
+    }
+
+    if (!mobile) previousScrollY = currentScrollY;
+    headerFramePending = false;
+  };
+  const requestHeaderUpdate = () => {
+    if (headerFramePending) return;
+    headerFramePending = true;
+    window.requestAnimationFrame(updateHeader);
+  };
+  window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
   updateHeader();
 }
 
@@ -71,6 +95,10 @@ if (ticketModal && ticketForm) {
     });
   });
 
+  if (new URLSearchParams(window.location.search).get('ticket') === '1') {
+    openTicketModal('full', null);
+  }
+
   closeButton.addEventListener('click', () => ticketModal.close());
   ticketModal.addEventListener('click', (event) => {
     if (event.target === ticketModal) ticketModal.close();
@@ -93,6 +121,14 @@ if (ticketModal && ticketForm) {
 
     if (firstInvalid) {
       firstInvalid.focus();
+      return;
+    }
+
+    const consent = ticketForm.querySelector('input[name="privacyAccepted"]');
+    if (!consent?.checked) {
+      errorMessage.textContent = 'Подтвердите согласие на обработку персональных данных.';
+      errorMessage.hidden = false;
+      consent?.focus();
       return;
     }
 
@@ -120,6 +156,7 @@ if (ticketModal && ticketForm) {
           contact: String(formData.get('contact')).trim(),
           ticket: formData.get('ticket'),
           website: formData.get('website'),
+          privacyAccepted: formData.get('privacyAccepted') === 'yes',
           openedAt: formOpenedAt,
           submissionId: window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`,
           page: `${window.location.origin}${window.location.pathname}`
@@ -168,24 +205,45 @@ if (menuButton && navigation) {
     menuButton.classList.toggle('is-active', willOpen);
     navigation.classList.toggle('is-open', willOpen);
     document.body.classList.toggle('menu-open', willOpen);
+    if (willOpen) siteHeader?.classList.remove('is-hidden');
     menuButton.setAttribute('aria-expanded', String(willOpen));
     menuButton.setAttribute('aria-label', willOpen ? 'Закрыть меню' : 'Открыть меню');
     if (willOpen) window.requestAnimationFrame(() => navigation.querySelector('a')?.focus());
   });
 
-  const scrollToSection = (target) => {
-    const headerHeight = siteHeader?.getBoundingClientRect().height || 0;
-    const mobile = window.matchMedia('(max-width: 767px)').matches;
-    const topClearance = headerHeight + (mobile ? 24 : 30);
-    const availableHeight = window.innerHeight - topClearance;
-    const sectionHeight = target.getBoundingClientRect().height;
-    const sectionTop = target.getBoundingClientRect().top + window.scrollY;
-    const centeredOffset = Math.max(0, (availableHeight - sectionHeight) / 2);
-    const desktopSectionOffset = !mobile && target.id === 'about' ? -40 : !mobile && target.id === 'gallery' ? 64 : 0;
-    const mobileSectionOffset = mobile && target.id === 'about' ? 12 : mobile && target.id === 'faq' ? 48 : 0;
-    const destination = Math.max(0, sectionTop - topClearance - centeredOffset + desktopSectionOffset + mobileSectionOffset);
+  const desktopAnchorLayout = {
+    program: { selector: '.rhythm__title', viewportTop: 0.137 },
+    about: { selector: '.trust__title', viewportTop: 0.191 },
+    gallery: { selector: '.gallery__title', viewportTop: 0.229 },
+    reviews: { selector: '.reviews__title', viewportTop: 0.275 }
+  };
 
-    window.scrollTo({ top: destination, behavior: 'smooth' });
+  const scrollToSection = (target, behavior = 'smooth') => {
+    const mobile = window.matchMedia('(max-width: 767px)').matches;
+    const layout = !mobile ? desktopAnchorLayout[target.id] : null;
+
+    // Anchor the visible heading to a fixed point in the viewport. This does not
+    // depend on the header's expanded/scrolled state, so repeated clicks land at
+    // exactly the same position.
+    if (behavior === 'smooth') {
+      document.body.classList.add('is-anchor-scrolling');
+      window.setTimeout(() => {
+        document.body.classList.remove('is-anchor-scrolling');
+        siteHeader?.classList.remove('is-hidden');
+      }, 800);
+    }
+
+    if (layout) {
+      const anchor = target.querySelector(layout.selector) || target;
+      const anchorTop = anchor.getBoundingClientRect().top + window.scrollY;
+      const destination = Math.max(0, anchorTop - window.innerHeight * layout.viewportTop);
+      window.scrollTo({ top: destination, behavior });
+      return;
+    }
+
+    const headerClearance = mobile ? 78 : 92;
+    const sectionTop = target.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: Math.max(0, sectionTop - headerClearance), behavior });
   };
 
   navigation.addEventListener('click', (event) => {
@@ -206,6 +264,19 @@ if (menuButton && navigation) {
     if (ticket) closeMenu();
   });
 
+  const alignCurrentNavHash = (behavior = 'auto') => {
+    const matchingLink = [...navigation.querySelectorAll('.nav__link')]
+      .find((link) => link.getAttribute('href') === window.location.hash);
+    const target = matchingLink ? document.querySelector(window.location.hash) : null;
+    if (target) scrollToSection(target, behavior);
+  };
+
+  // Keep direct links, reloads and browser Back/Forward aligned the same way as clicks.
+  window.addEventListener('hashchange', () => window.requestAnimationFrame(() => alignCurrentNavHash()));
+  if (window.location.hash) {
+    window.addEventListener('load', () => window.requestAnimationFrame(() => alignCurrentNavHash()), { once: true });
+  }
+
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeMenu();
     if (event.key !== 'Tab' || !navigation.classList.contains('is-open')) return;
@@ -220,6 +291,16 @@ if (menuButton && navigation) {
 const galleryTrack = document.querySelector('.gallery__track');
 
 if (galleryTrack) {
+  const galleryDimensions = [
+    [1600, 898], [1536, 1024], [1600, 1068], [1600, 1067], [1600, 1067],
+    [1023, 1537], [1600, 1067], [1067, 1600], [1067, 1600], [1068, 1600],
+    [1600, 1067], [1600, 1067], [1600, 1067], [1600, 1067], [1068, 1600],
+    [1068, 1600], [1067, 1600], [1067, 1600], [1600, 1067], [1600, 1067],
+    [1067, 1600], [1067, 1600], [1067, 1600], [1067, 1600], [1067, 1600],
+    [1024, 1535], [1600, 1068], [1023, 1537], [1067, 1600], [1066, 1600],
+    [1600, 1068], [1067, 1600], [1600, 1067], [1067, 1600], [1600, 1067],
+    [1067, 1600], [1600, 1067], [1600, 1067]
+  ];
   const fragment = document.createDocumentFragment();
   for (let index = 5; index <= 42; index += 1) {
     const button = document.createElement('button');
@@ -229,6 +310,7 @@ if (galleryTrack) {
     button.dataset.galleryIndex = String(index - 1);
     image.src = `img/carousel-${String(index).padStart(2, '0')}.webp`;
     image.alt = `Фотография фестиваля Узор ${index}`;
+    [image.width, image.height] = galleryDimensions[index - 5];
     image.loading = 'lazy';
     image.decoding = 'async';
     button.append(image);
@@ -283,12 +365,14 @@ if (galleryImages.length && lightbox) {
     lightboxTrigger = trigger || document.activeElement;
     showImage(index);
     lightbox.hidden = false;
-    document.body.classList.add('menu-open');
+    document.querySelector('main')?.setAttribute('inert', '');
+    document.body.classList.add('lightbox-open');
     window.requestAnimationFrame(() => lightboxClose.focus());
   };
   const closeLightbox = () => {
     lightbox.hidden = true;
-    document.body.classList.remove('menu-open');
+    document.querySelector('main')?.removeAttribute('inert');
+    document.body.classList.remove('lightbox-open');
     lightboxTrigger?.focus();
   };
 
@@ -357,10 +441,23 @@ const galleryPrev = document.querySelector('.gallery__arrow--prev');
 const galleryNext = document.querySelector('.gallery__arrow--next');
 
 if (galleryViewport && galleryPrev && galleryNext) {
+  const galleryStatus = document.createElement('p');
+  galleryStatus.className = 'gallery__status';
+  galleryStatus.setAttribute('aria-live', 'polite');
+  galleryViewport.closest('.gallery__carousel')?.append(galleryStatus);
+
   const getGalleryMetrics = () => {
     const originals = [...galleryViewport.querySelectorAll('.gallery__slide:not([data-gallery-clone])')];
     const step = originals.length > 1 ? originals[1].offsetLeft - originals[0].offsetLeft : galleryViewport.clientWidth;
     return { start: originals[0]?.offsetLeft || 0, cycle: step * originals.length, step };
+  };
+
+  const updateGalleryStatus = () => {
+    const { start, step } = getGalleryMetrics();
+    const total = galleryOriginalSlides.length;
+    const rawIndex = Math.round((galleryViewport.scrollLeft - start) / step);
+    const index = ((rawIndex % total) + total) % total;
+    galleryStatus.textContent = `${index + 1} / ${total}`;
   };
 
   const resetGalleryPosition = () => {
@@ -383,6 +480,7 @@ if (galleryViewport && galleryPrev && galleryNext) {
   };
 
   galleryViewport.addEventListener('scroll', () => {
+    updateGalleryStatus();
     window.clearTimeout(galleryScrollTimer);
     galleryScrollTimer = window.setTimeout(() => {
       const { start, cycle, step } = getGalleryMetrics();
@@ -398,7 +496,7 @@ if (galleryViewport && galleryPrev && galleryNext) {
     if (event.key === 'ArrowRight') { event.preventDefault(); moveGallery(1); }
   });
   window.addEventListener('resize', resetGalleryPosition);
-  window.requestAnimationFrame(resetGalleryPosition);
+  window.requestAnimationFrame(() => { resetGalleryPosition(); updateGalleryStatus(); });
 }
 
 const reviewsTrack = document.querySelector('.reviews__track');
@@ -408,6 +506,10 @@ const reviewsNext = document.querySelector('.reviews__arrow--next');
 
 if (reviewsTrack && reviewsViewport && reviewsPrev && reviewsNext) {
   const originalReviews = [...reviewsTrack.querySelectorAll('.review-card')];
+  const reviewsStatus = document.createElement('p');
+  reviewsStatus.className = 'reviews__status';
+  reviewsStatus.setAttribute('aria-live', 'polite');
+  reviewsViewport.closest('.reviews__carousel')?.append(reviewsStatus);
   const cloneCount = Math.min(3, originalReviews.length);
 
   const before = originalReviews.slice(-cloneCount).map((card) => {
@@ -431,6 +533,13 @@ if (reviewsTrack && reviewsViewport && reviewsPrev && reviewsNext) {
     return { start: originals[0]?.offsetLeft || 0, cycle: step * originals.length, step };
   };
 
+  const updateReviewsStatus = () => {
+    const { start, step } = getReviewMetrics();
+    const rawIndex = Math.round((reviewsViewport.scrollLeft - start) / step);
+    const index = ((rawIndex % originalReviews.length) + originalReviews.length) % originalReviews.length;
+    reviewsStatus.textContent = `${index + 1} / ${originalReviews.length}`;
+  };
+
   const resetReviews = () => {
     reviewsViewport.scrollLeft = getReviewMetrics().start;
   };
@@ -446,6 +555,7 @@ if (reviewsTrack && reviewsViewport && reviewsPrev && reviewsNext) {
     window.requestAnimationFrame(() => { reviewsViewport.style.scrollBehavior = ''; });
   };
   reviewsViewport.addEventListener('scroll', () => {
+    updateReviewsStatus();
     window.clearTimeout(reviewsScrollTimer);
     reviewsScrollTimer = window.setTimeout(() => {
       const { start, cycle, step } = getReviewMetrics();
@@ -461,5 +571,5 @@ if (reviewsTrack && reviewsViewport && reviewsPrev && reviewsNext) {
     if (event.key === 'ArrowRight') { event.preventDefault(); moveReviews(1); }
   });
   window.addEventListener('resize', resetReviews);
-  window.requestAnimationFrame(resetReviews);
+  window.requestAnimationFrame(() => { resetReviews(); updateReviewsStatus(); });
 }
