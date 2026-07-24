@@ -347,6 +347,7 @@ const galleryImages = [...document.querySelectorAll('.gallery__slide:not([data-g
 const galleryButtons = document.querySelectorAll('[data-gallery-index]');
 const galleryOpenButton = document.querySelector('[data-gallery-open]');
 const lightbox = document.querySelector('.lightbox');
+let syncGalleryToImage = () => null;
 
 if (galleryImages.length && lightbox) {
   const lightboxImage = lightbox.querySelector('.lightbox__image');
@@ -354,8 +355,20 @@ if (galleryImages.length && lightbox) {
   const lightboxClose = lightbox.querySelector('.lightbox__close');
   let currentImage = 0;
   let lightboxTrigger = null;
+  let swipePointerId = null;
+  let swipeStartX = 0;
+  let swipeStartY = 0;
+  let swipeDeltaX = 0;
+  let swipeDeltaY = 0;
+
+  const resetSwipePreview = () => {
+    lightboxImage.style.removeProperty('transition');
+    lightboxImage.style.removeProperty('transform');
+    lightboxImage.style.removeProperty('opacity');
+  };
 
   const showImage = (index) => {
+    resetSwipePreview();
     currentImage = (index + galleryImages.length) % galleryImages.length;
     lightboxImage.src = galleryImages[currentImage].src;
     lightboxImage.alt = galleryImages[currentImage].alt;
@@ -373,8 +386,47 @@ if (galleryImages.length && lightbox) {
     lightbox.hidden = true;
     document.querySelector('main')?.removeAttribute('inert');
     document.body.classList.remove('lightbox-open');
-    lightboxTrigger?.focus();
+    const currentSlide = syncGalleryToImage(currentImage);
+    window.requestAnimationFrame(() => (currentSlide || lightboxTrigger)?.focus());
   };
+
+  const finishSwipe = (event) => {
+    if (event.pointerId !== swipePointerId) return;
+    if (lightboxImage.hasPointerCapture?.(event.pointerId)) lightboxImage.releasePointerCapture(event.pointerId);
+    const threshold = Math.max(48, Math.min(96, lightboxImage.clientWidth * 0.14));
+    const isHorizontalSwipe = Math.abs(swipeDeltaX) >= threshold && Math.abs(swipeDeltaX) > Math.abs(swipeDeltaY) * 1.15;
+    swipePointerId = null;
+    resetSwipePreview();
+    if (isHorizontalSwipe) showImage(currentImage + (swipeDeltaX < 0 ? 1 : -1));
+  };
+
+  lightboxImage.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary || event.button !== 0) return;
+    swipePointerId = event.pointerId;
+    swipeStartX = event.clientX;
+    swipeStartY = event.clientY;
+    swipeDeltaX = 0;
+    swipeDeltaY = 0;
+    lightboxImage.setPointerCapture?.(event.pointerId);
+  });
+  lightboxImage.addEventListener('pointermove', (event) => {
+    if (event.pointerId !== swipePointerId) return;
+    swipeDeltaX = event.clientX - swipeStartX;
+    swipeDeltaY = event.clientY - swipeStartY;
+    if (Math.abs(swipeDeltaX) <= Math.abs(swipeDeltaY)) return;
+    event.preventDefault();
+    const resistedDelta = swipeDeltaX * 0.72;
+    lightboxImage.style.transition = 'none';
+    lightboxImage.style.transform = `translateX(${resistedDelta}px)`;
+    lightboxImage.style.opacity = String(Math.max(0.55, 1 - Math.abs(resistedDelta) / Math.max(lightboxImage.clientWidth, 1)));
+  });
+  lightboxImage.addEventListener('pointerup', finishSwipe);
+  lightboxImage.addEventListener('pointercancel', (event) => {
+    if (event.pointerId !== swipePointerId) return;
+    swipePointerId = null;
+    resetSwipePreview();
+  });
+  lightboxImage.addEventListener('dragstart', (event) => event.preventDefault());
 
   galleryButtons.forEach((button) => button.addEventListener('click', () => openLightbox(Number(button.dataset.galleryIndex), button)));
   galleryOpenButton?.addEventListener('click', () => openLightbox(0, galleryOpenButton));
@@ -463,6 +515,20 @@ if (galleryViewport && galleryPrev && galleryNext) {
   const resetGalleryPosition = () => {
     const { start } = getGalleryMetrics();
     galleryViewport.scrollLeft = start;
+  };
+
+  syncGalleryToImage = (index) => {
+    const originals = [...galleryViewport.querySelectorAll('.gallery__slide:not([data-gallery-clone])')];
+    const normalizedIndex = ((index % originals.length) + originals.length) % originals.length;
+    const slide = originals[normalizedIndex];
+    if (!slide) return null;
+    galleryViewport.style.scrollBehavior = 'auto';
+    galleryViewport.scrollLeft = slide.offsetLeft;
+    window.requestAnimationFrame(() => {
+      galleryViewport.style.scrollBehavior = '';
+      updateGalleryStatus();
+    });
+    return slide;
   };
 
   const moveGallery = (direction) => {
